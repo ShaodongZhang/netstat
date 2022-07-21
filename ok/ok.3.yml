@@ -1,0 +1,27 @@
+---
+  - name: Check what process is running on a Windows port
+    hosts: win10
+    gather_facts: yes
+    tasks:
+      - name: win_command module, get port process
+        tags: win10
+        win_command: CMD /C "C:\Document\Pru\work\tls\pid-para.bat {{ item }}"
+        register: winresult
+        #debug:
+        #  var: "ports"
+        #loop: "{{ ports }}" 
+        with_items:
+          - "{{ ports }}"
+
+      - debug:
+          var: winresult.results
+          #msg: |-
+          #  {% for r in winresult.results %}
+          #    {{ r.stdout_lines }}
+          #  {% endfor %}
+
+#       - name: Debug message
+#           - debug: 
+#             var: winresult.stdout_lines
+
+

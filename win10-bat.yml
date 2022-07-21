@@ -1,0 +1,40 @@
+---
+  - name: Check what process is running on a Windows port
+    hosts: win10
+    gather_facts: yes
+    tasks:
+      - name: Create C:\Temp directory
+        win_file:
+          path: C:\Temp
+          state: directory
+
+      - name: Copy pid-para.bat to client C:\Temp
+        win_copy:
+          src: /opt/ansible/netstat/pid-para.bat
+          dest: C:\Temp\pid-para.bat
+
+      - name: win_command module, get port process
+        tags: win10
+        win_command: CMD /C "C:\Temp\pid-para.bat {{ item }}"
+        register: winresult
+        with_items:
+          - "{{ ports }}"
+
+      - debug:
+          msg: "{{ item.stdout_lines }}"
+        loop: "{{ winresult.results }}"
+
+      - name: Pause 5 seconds
+        ansible.builtin.pause:
+          seconds: 5
+
+      - name: Remove pid-para.bat file
+        win_file:
+          path: C:\Temp\pid-para.bat
+          state: absent
+
+#       - name: Debug message
+#           - debug: 
+#             var: winresult.stdout_lines
+
+

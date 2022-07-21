@@ -1,0 +1,19 @@
+---
+  - name: Check what process is running on a port
+    hosts: centos7
+    tasks:
+      - name: Listing port, PID, and process name
+        become: yes
+        become_user: root
+        tags: shell
+        shell: "netstat -naputl | grep 22"
+        register: portresult
+
+      - debug:
+          var=portresult.stdout_lines
+
+#       - name: Debug message
+#           - debug: 
+#             var: portresult.stdout_lines
+
+

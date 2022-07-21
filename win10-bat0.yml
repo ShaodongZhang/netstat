@@ -1,0 +1,18 @@
+---
+  - name: Check what process is running on a Windows port
+    hosts: win10
+    tasks:
+      - name: win_command module, get ipconfig /all
+        tags: win10
+        #win_command: CMD /C "ipconfig /all"
+        win_command: CMD /C "C:\Document\Pru\work\tls\pid-para.bat 3389"
+        register: winresult
+
+      - debug:
+          var=winresult.stdout_lines
+
+#       - name: Debug message
+#           - debug: 
+#             var: winresult.stdout_lines
+
+
