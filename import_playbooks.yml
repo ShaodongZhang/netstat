@@ -1,0 +1,6 @@
+---
+- name: first import
+  import_playbook: echo.yml
+- name: second import
+  import_playbook: echo.yml
+  
