@@ -14,7 +14,7 @@
 # This clone repository from github
       - name: Clone B on the remote
         git:
-          repo: https://ShaodongZhang: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@github.com/cmd.git
+          repo: https://ShaodongZhang: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@github.com/cmd.git
           dest: /tmp/cmd
 
 # This copies the specified file from the remote to the current dir
