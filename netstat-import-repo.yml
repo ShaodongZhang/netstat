@@ -15,7 +15,7 @@
   - name: Clone B on the remote
     git:
       #      https://github.com/ShaodongZhang/netstat.git
-      repo: 'https://ShaodongZhang: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@github.com/cmd.git'
+      repo: 'https://ShaodongZhang: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@github.com/cmd.git'
       dest: /tmp/cmd
 
 # This copies the specified file from the remote to the current dir
