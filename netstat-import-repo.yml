@@ -1,0 +1,29 @@
+---
+  - name: Check what process is running on a port
+    hosts: centos7
+    tasks:
+      - name: Listing port, PID, and process name
+        become: yes
+        become_user: root
+        tags: shell
+        shell: "netstat -naputl | grep 22"
+        register: portresult
+
+      - debug:
+          var=portresult.stdout_lines
+# This clone repository from github
+  - name: Clone B on the remote
+    git:
+      #      https://github.com/ShaodongZhang/netstat.git
+      repo: 'https://ShaodongZhang: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@github.com/cmd.git'
+      dest: /tmp/cmd
+
+# This copies the specified file from the remote to the current dir
+  - name: Fetch echo1.yml from remote
+    fetch:
+      src: /tmp/cmd/echo1.yml
+      dest: ./
+      flat: yes
+
+  - name: Run echo1.yml
+    include_tasks: echo1.yml
