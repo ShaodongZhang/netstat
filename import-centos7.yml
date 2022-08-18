@@ -1,0 +1,6 @@
+---
+- name: first import
+  import_playbook: echo-centos7.yml
+- name: second import
+  import_playbook: echo-centos7.yml
+  

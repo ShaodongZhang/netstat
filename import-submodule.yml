@@ -1,0 +1,21 @@
+---
+  - name: Check what process is running on a port
+    hosts: centos7
+    tasks:
+      - name: Listing port, PID, and process name
+        become: yes
+        become_user: root
+        vars:
+          ansible_sudo_pass: 'netscout1' 
+        tags: shell
+        shell: "netstat -naputl | grep 22"
+        register: portresult
+
+      - debug:
+          var=portresult.stdout_lines
+
+# Import submodule playbook
+      - name: Import apache submodule playbook
+        include_tasks: apache/echo-from-apache.yml
+        #import_playbook: apache/echo-from-apache.yml
+

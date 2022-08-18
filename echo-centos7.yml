@@ -1,0 +1,7 @@
+---
+- hosts: centos7
+  tasks:
+    - name: Echo message
+      debug:
+        msg: "Output message from echo-centos7.yml"
+        
