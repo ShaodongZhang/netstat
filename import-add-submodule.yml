@@ -14,14 +14,39 @@
       - debug:
           var=portresult.stdout_lines
 
+# This clone repository from github
+      - name: Clone netstat.git on the remote
+        git:
+          repo: 'https://github.com/ShaodongZhang/netstat.git'
+          dest: /tmp/netstat
+
+# Check if submodule exist
+      - name: Check if submodule apache exists
+        stat:
+          path: /tmp/netstat/apache
+        register: submodule_check
+
 # Git add submodule playbook
       - name: Git add apache submodule
         shell: "git submodule add https://github.com/ShaodongZhang/apache.git"
         args:
-          chdir: .
+          chdir: /tmp/netstat
+        when: not submodule_check.stat.exists
+
+# This copies the specified file from the remote to the current dir
+      - name: Fetch echo-from-apache.yml from remote
+        fetch:
+          src: /tmp/netstat/apache/echo-from-apache.yml
+          dest: ./
+          flat: yes
+          remote_src: yes
+
+      - name: Sleep 2
+        shell: "sleep 2"
+
 
 # Include submodule playbook
       - name: Include apache submodule playbook
-        include_tasks: apache/echo-from-apache.yml
+        include_tasks: echo-from-apache.yml
         #import_playbook: apache/echo-from-apache.yml
 
