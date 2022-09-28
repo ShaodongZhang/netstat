@@ -1,0 +1,45 @@
+---
+  - name: Check what process is running on a port
+    hosts: centos7
+    tasks:
+      - name: Listing port, PID, and process name
+        become: yes
+        become_user: root
+        vars:
+          ansible_sudo_pass: 'netscout1' 
+        tags: shell
+        shell: "netstat -naputl | grep 22"
+        register: portresult
+
+      - debug:
+          var=portresult.stdout_lines
+
+# This clone repository from github
+      - name: Clone netstat.git on the remote
+        git:
+          repo: 'https://github.com/ShaodongZhang/netstat.git'
+          dest: /tmp/netstat
+
+# Git add submodule playbook
+      - name: Git add apache submodule
+        shell: "git submodule add https://github.com/ShaodongZhang/apache.git"
+        args:
+          chdir: /tmp/netstat
+
+# This copies the specified file from the remote to the current dir
+      - name: Fetch echo-from-apache.yml from remote
+        fetch:
+          src: /tmp/netstat/apache/echo-from-apache.yml
+          dest: ./
+          flat: yes
+          remote_src: yes
+
+      - name: Sleep 2
+        shell: "sleep 2"
+
+
+# Include submodule playbook
+      - name: Include apache submodule playbook
+        include_tasks: echo-from-apache.yml
+        #import_playbook: apache/echo-from-apache.yml
+
