@@ -42,13 +42,8 @@
           path: ./ziptestdata.zip
           state: absent
       - name: Git archive, to get a specific file from git repo.
-<<<<<<< HEAD
-        #ng-command: git archive --remote=https://github.com/ShaodongZhang/patch-tmp.git HEAD:path/in/repo ziptestdata.zip | tar -x 
-        #ng-command: git archive --remote=https://github.com/ShaodongZhang/patch-tmp.git HEAD:path/in/repo ziptestdata.zip -o /tmp/archive.zip 
-=======
         #ng-command: git archive --remote=https://github.com/ShaodongZhang/patch-tmp.git HEAD:path/in/repo ziptestdata.zip | tar -x
         #ng-command: git archive --remote=https://github.com/ShaodongZhang/patch-tmp.git HEAD:path/in/repo ziptestdata.zip -o /tmp/archive.zip
->>>>>>> 9b0338b641385e72f9e0a312f2f1fc67a553a0ed
         #ok-command: svn export https://github.com/ShaodongZhang/patch-tmp.git/trunk/ziptestdata.zip
         command: "{{ item }}"
         register: git_archive
@@ -63,11 +58,7 @@
 #            {% endfor %}
 
       - name: Print debug msg in new lines
-<<<<<<< HEAD
-        vars: 
-=======
         vars:
->>>>>>> 9b0338b641385e72f9e0a312f2f1fc67a553a0ed
           msg1: |
             {% for r in git_archive.results %}
               #{{ r.stdout_lines | to_nice_yaml }}
