@@ -1,12 +1,13 @@
 ---
   - name: Check what process is running on a port
-    hosts: centos7
+    #hosts: centos7
+    hosts: localhost
     tasks:
       - name: Listing port, PID, and process name
         become: yes
         become_user: root
         vars:
-          ansible_sudo_pass: 'netscout1' 
+          ansible_sudo_pass: 'netscout1'
         tags: shell
         shell: "netstat -naputl | grep 22"
         register: portresult
@@ -35,3 +36,33 @@
       - name: Run echo-include.yml
         include_tasks: echo-include.yml
 
+# Git archive, to get a specific file from git repo.
+      - name: Make sure the file to fetch not exists in local before svn, git-archive
+        file:
+          path: ./ziptestdata.zip
+          state: absent
+      - name: Git archive, to get a specific file from git repo.
+        #ng-command: git archive --remote=https://github.com/ShaodongZhang/patch-tmp.git HEAD:path/in/repo ziptestdata.zip | tar -x
+        #ng-command: git archive --remote=https://github.com/ShaodongZhang/patch-tmp.git HEAD:path/in/repo ziptestdata.zip -o /tmp/archive.zip
+        #ok-command: svn export https://github.com/ShaodongZhang/patch-tmp.git/trunk/ziptestdata.zip
+        command: "{{ item }}"
+        register: git_archive
+        with_items:
+            - svn export https://github.com/ShaodongZhang/patch-tmp.git/trunk/ziptestdata.zip
+            - ls -la ziptestdata.zip
+#      - debug:
+#          msg: |-
+#            {% for r in git_archive.results %}
+#              #{{ r.stdout_lines | to_nice_yaml }}
+#              {{ r.stdout_lines }}
+#            {% endfor %}
+
+      - name: Print debug msg in new lines
+        vars:
+          msg1: |
+            {% for r in git_archive.results %}
+              #{{ r.stdout_lines | to_nice_yaml }}
+              {{ r.stdout_lines }}
+            {% endfor %}
+        debug:
+          msg: "{{ msg1.split('\n') }}"
