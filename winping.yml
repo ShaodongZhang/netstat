@@ -1,0 +1,16 @@
+---
+  - name: Win_ping to Windows hosts.
+    hosts: win10
+    tasks:
+      - name: win_ping to Windows host task.
+        win_ping:
+        ignore_errors: true
+
+  - name: Ping to Linux hosts.
+    hosts: centos7
+    tasks:
+      - name: ping to linux host task.
+        ping:
+        ignore_errors: true
+
+
